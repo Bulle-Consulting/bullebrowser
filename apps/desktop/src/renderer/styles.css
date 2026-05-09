@@ -1,0 +1,105 @@
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/600.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  color: #0f172a;
+  background: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -webkit-app-region: no-drag;
+  user-select: none;
+}
+
+input,
+textarea {
+  user-select: text;
+}
+
+.drag-region {
+  -webkit-app-region: drag;
+}
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+/* Markdown styling for the AI panel chat bubbles */
+.md-prose {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #0f172a;
+}
+.md-prose h1,
+.md-prose h2,
+.md-prose h3 {
+  font-weight: 600;
+  margin: 0.75em 0 0.25em;
+}
+.md-prose p {
+  margin: 0.5em 0;
+}
+.md-prose ul,
+.md-prose ol {
+  margin: 0.5em 0;
+  padding-left: 1.25em;
+}
+.md-prose code {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  font-size: 12.5px;
+  background: #f1f5f9;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+.md-prose pre {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 12.5px;
+}
+.md-prose pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+.md-prose table {
+  border-collapse: collapse;
+  margin: 0.75em 0;
+  font-size: 12.5px;
+  width: 100%;
+}
+.md-prose th,
+.md-prose td {
+  border: 1px solid #e2e8f0;
+  padding: 6px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+.md-prose th {
+  background: #f8fafc;
+  font-weight: 600;
+}
+.md-prose a {
+  color: #2563eb;
+  text-decoration: underline;
+}

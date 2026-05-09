@@ -1,0 +1,168 @@
+name: build-desktop
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-14
+            target: mac
+          - os: windows-2022
+            target: win
+          - os: ubuntu-22.04
+            target: linux
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type-check, lint, and test
+        run: |
+          pnpm -r typecheck
+          pnpm --filter @bullebrowser/agent-core test
+
+      - name: Build desktop renderer + main
+        run: pnpm --filter @bullebrowser/desktop build
+
+      # macOS code signing + notarization
+      - name: Import Apple certificate (macOS)
+        if: matrix.target == 'mac' && env.MACOS_CERTIFICATE != ''
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        run: |
+          echo "$MACOS_CERTIFICATE" | base64 --decode > certificate.p12
+          security create-keychain -p "" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "" build.keychain
+          security import certificate.p12 -k build.keychain -P "$MACOS_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" build.keychain
+          rm certificate.p12
+
+      - name: Build & sign macOS installer
+        if: matrix.target == 'mac'
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_KEYCHAIN: build.keychain
+        run: pnpm --filter @bullebrowser/desktop package:mac
+
+      - name: Build & sign Windows installer
+        if: matrix.target == 'win'
+        env:
+          WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: pwsh
+        run: |
+          if ($env:WINDOWS_CERTIFICATE) {
+            $bytes = [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE)
+            [IO.File]::WriteAllBytes("$PWD/cert.pfx", $bytes)
+            $env:CSC_LINK = "$PWD/cert.pfx"
+            $env:CSC_KEY_PASSWORD = $env:WINDOWS_CERTIFICATE_PASSWORD
+          }
+          pnpm --filter @bullebrowser/desktop package:win
+
+      - name: Build Linux installers
+        if: matrix.target == 'linux'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm --filter @bullebrowser/desktop package:linux
+
+      - name: Compute SHA-256 checksums
+        shell: bash
+        run: |
+          cd apps/desktop/release
+          shopt -s nullglob
+          : > checksums-${{ matrix.target }}.txt
+          for f in *.dmg *.zip *.exe *.AppImage *.deb; do
+            if [ -f "$f" ]; then
+              sha256sum "$f" >> checksums-${{ matrix.target }}.txt
+            fi
+          done
+          cat checksums-${{ matrix.target }}.txt || true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bullebrowser-${{ matrix.target }}
+          path: |
+            apps/desktop/release/*.dmg
+            apps/desktop/release/*.zip
+            apps/desktop/release/*.exe
+            apps/desktop/release/*.AppImage
+            apps/desktop/release/*.deb
+            apps/desktop/release/checksums-*.txt
+            apps/desktop/release/latest*.yml
+          if-no-files-found: warn
+
+  release:
+    name: Publish GitHub Release
+    needs: build
+    runs-on: ubuntu-22.04
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Combine checksums
+        run: |
+          mkdir -p release-assets
+          find dist -type f \( -name '*.dmg' -o -name '*.exe' -o -name '*.AppImage' -o -name '*.deb' -o -name '*.zip' -o -name 'latest*.yml' \) -exec cp {} release-assets/ \;
+          cat dist/**/checksums-*.txt > release-assets/checksums.txt || true
+          ls -la release-assets
+
+      - name: Generate release notes from Conventional Commits
+        id: notes
+        run: |
+          last_tag=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || true)
+          if [ -z "$last_tag" ]; then
+            range="HEAD"
+          else
+            range="${last_tag}..HEAD"
+          fi
+          {
+            echo "## Highlights"
+            echo ""
+            git log --pretty=format:'- %s' "$range" | grep -E '^- (feat|fix|perf|refactor|docs|chore)\(' || echo "- (no Conventional Commits in range)"
+            echo ""
+            echo "Full diff: ${last_tag:-(initial)}...${GITHUB_REF_NAME}"
+          } > notes.md
+          echo "path=notes.md" >> $GITHUB_OUTPUT
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-assets/*
+          body_path: ${{ steps.notes.outputs.path }}
+          generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,42 @@
+BulleBrowser License
+Copyright (c) 2026 Bulle Consulting. All rights reserved.
+
+This software and associated documentation files (the "Software") are the
+proprietary work of Bulle Consulting. The Software is licensed, not sold.
+
+1. Permitted use
+   Bulle Consulting grants the end user a non-exclusive, non-transferable,
+   revocable license to install and use compiled binaries of the Software
+   distributed through bullebrowser.com or an official Bulle Consulting
+   release channel, for personal or internal business use.
+
+2. Restrictions
+   You may not, without prior written permission from Bulle Consulting:
+   (a) redistribute, sublicense, sell, rent, or lease the Software in
+       source or binary form;
+   (b) modify, fork, reverse engineer, decompile, or create derivative
+       works of the Software, except as expressly permitted by applicable
+       law that cannot be waived by contract;
+   (c) remove or alter trademarks, logos, copyright notices, or attribution
+       notices contained in the Software;
+   (d) use the Software to build a competing product.
+
+3. Open source components
+   The Software incorporates open source components, each governed by its
+   own license. The complete list and license texts are available in the
+   in-app About page and in third-party-notices.txt distributed with each
+   release. Nothing in this license restricts your rights under those
+   open source licenses with respect to those components.
+
+4. No warranty
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+
+5. Limitation of liability
+   IN NO EVENT SHALL BULLE CONSULTING BE LIABLE FOR ANY CLAIM, DAMAGES, OR
+   OTHER LIABILITY ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE
+   OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+6. Contact
+   Bulle Consulting — hello@bulleconsulting.com

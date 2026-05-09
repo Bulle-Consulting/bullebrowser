@@ -1,0 +1,28 @@
+{
+  "name": "bullebrowser-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "BulleBrowser monorepo — agentic browser by Bulle Consulting",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "pnpm --filter @bullebrowser/desktop dev",
+    "dev:web": "pnpm --filter @bullebrowser/web dev",
+    "build": "pnpm -r build",
+    "build:desktop": "pnpm --filter @bullebrowser/desktop build",
+    "build:web": "pnpm --filter @bullebrowser/web build",
+    "package:desktop": "pnpm --filter @bullebrowser/desktop package",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml,css}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.8.3",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20.11.0",
+    "pnpm": ">=9.0.0"
+  }
+}

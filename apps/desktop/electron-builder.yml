@@ -1,0 +1,72 @@
+appId: com.bulleconsulting.bullebrowser
+productName: BulleBrowser
+copyright: Copyright © 2026 Bulle Consulting
+
+directories:
+  output: release
+  buildResources: resources
+
+files:
+  - out/**/*
+  - package.json
+  - "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}"
+  - "!**/*.{ts,tsx,map}"
+
+asarUnpack:
+  - resources/**
+
+mac:
+  category: public.app-category.productivity
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: resources/entitlements.mac.plist
+  entitlementsInherit: resources/entitlements.mac.plist
+  notarize: false # set NOTARIZE_TOOL secrets in CI
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+    - target: zip
+      arch:
+        - x64
+        - arm64
+  icon: resources/icon.icns
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+        - arm64
+  icon: resources/icon.ico
+  publisherName: Bulle Consulting
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  artifactName: "${productName}-Setup-${version}-${arch}.${ext}"
+
+linux:
+  category: Network
+  target:
+    - target: AppImage
+      arch:
+        - x64
+        - arm64
+    - target: deb
+      arch:
+        - x64
+        - arm64
+  icon: resources/icon.png
+  desktop:
+    Name: BulleBrowser
+    Comment: The agentic browser for grants, RFPs, and compliance work
+    Categories: Network;WebBrowser;
+
+publish:
+  provider: github
+  owner: wardere83
+  repo: bullebrowser
+  releaseType: release
