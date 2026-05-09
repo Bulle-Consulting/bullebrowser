@@ -37,7 +37,8 @@ export default function PrivacyPage() {
         </li>
         <li>
           <strong>Browsing history</strong> and <strong>bookmarks</strong>,
-          stored in the standard Electron user-data directory for your OS.
+          stored in the standard {product.name} user-data directory for
+          your operating system.
         </li>
         <li>
           <strong>Agent conversations</strong>, stored locally so you can

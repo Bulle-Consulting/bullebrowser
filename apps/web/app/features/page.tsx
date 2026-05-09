@@ -20,8 +20,9 @@ export default function FeaturesPage() {
 
       <h2>Agent capabilities</h2>
       <p>
-        The agent has access to ten tools backed by Chromium&apos;s DevTools
-        Protocol on the active tab:
+        The agent has access to ten tools backed by the live browser
+        engine on the active tab — same DOM, same network stack, same
+        cookies as a human visitor:
       </p>
       <ul>
         <li><strong>navigate</strong> — go to a URL</li>

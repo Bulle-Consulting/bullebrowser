@@ -1,0 +1,30 @@
+<!--
+  BulleBrowser wordmark — light text variant (for use on dark backgrounds).
+  Mirrors wordmark.svg with white fill so it pops on the surface-dark navy.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 320" width="1680" height="320" role="img" aria-label="BulleBrowser">
+  <defs>
+    <style>
+      .bb-wm-text-light {
+        font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+        font-weight: 700;
+        font-size: 220px;
+        letter-spacing: -6px;
+        fill: #FFFFFF;
+      }
+    </style>
+    <mask id="bb-wm-mask-light">
+      <rect width="1680" height="320" fill="white"/>
+      <rect x="105" y="180" width="60" height="6" fill="black"/>
+      <rect x="365" y="120" width="60" height="6" fill="black"/>
+      <rect x="540" y="180" width="60" height="6" fill="black"/>
+      <rect x="900" y="180" width="60" height="6" fill="black"/>
+      <rect x="1100" y="120" width="60" height="6" fill="black"/>
+      <rect x="1280" y="180" width="60" height="6" fill="black"/>
+      <rect x="1480" y="120" width="60" height="6" fill="black"/>
+    </mask>
+  </defs>
+  <g mask="url(#bb-wm-mask-light)">
+    <text x="50" y="240" class="bb-wm-text-light">BulleBrowser</text>
+  </g>
+</svg>
