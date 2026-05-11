@@ -51,21 +51,19 @@ nsis:
 
 linux:
   category: Network
+  artifactName: "${productName}-${version}-${arch}.${ext}"
   maintainer: Bulle Consulting <hello@bulleconsulting.com>
   target:
     - target: AppImage
       arch:
         - x64
         - arm64
-    - target: deb
-      arch:
-        - x64
-        - arm64
   icon: resources/icon.png
   desktop:
     Name: BulleBrowser
-    Comment: The agentic browser for grants, RFPs, and compliance work
+    Comment: The agentic AI web browser
     Categories: Network;WebBrowser;
+
 
 publish:
   provider: github
