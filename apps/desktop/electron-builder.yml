@@ -12,6 +12,7 @@ files:
   - "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}"
   - "!**/*.{ts,tsx,map}"
 
+asar: false
 asarUnpack:
   - resources/**
 
@@ -50,6 +51,7 @@ nsis:
 
 linux:
   category: Network
+  maintainer: Bulle Consulting <hello@bulleconsulting.com>
   target:
     - target: AppImage
       arch:

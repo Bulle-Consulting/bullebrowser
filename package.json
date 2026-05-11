@@ -2,7 +2,7 @@
   "name": "bullebrowser-monorepo",
   "version": "0.1.0",
   "private": true,
-  "description": "BulleBrowser monorepo — agentic browser by Bulle Consulting",
+  "description": "BulleBrowser monorepo \u2014 agentic browser by Bulle Consulting",
   "license": "UNLICENSED",
   "packageManager": "pnpm@9.15.0",
   "scripts": {
@@ -29,5 +29,10 @@
   "engines": {
     "node": ">=20.11.0",
     "pnpm": ">=9.0.0"
-  }
+  },
+  "author": {
+    "name": "Bulle Consulting",
+    "email": "hello@bulleconsulting.com"
+  },
+  "homepage": "https://bullebrowser.com"
 }
