@@ -69,6 +69,33 @@ jobs:
           CSC_KEYCHAIN: build.keychain
         run: pnpm --filter @bullebrowser/desktop package:mac
 
+      - name: Ad-hoc codesign macOS app + dmg
+        if: matrix.target == 'mac'
+        run: |
+          set -e
+          cd apps/desktop/release
+          # Re-sign every .app inside each unpacked output, then re-sign each .dmg.
+          # Without ANY signature (or with broken hardened runtime), macOS shows
+          # "BulleBrowser is damaged". Ad-hoc sign turns that into a normal
+          # "unidentified developer" prompt that users can bypass.
+          for D in mac mac-arm64; do
+            APP="$D/BulleBrowser.app"
+            if [ -d "$APP" ]; then
+              echo "Ad-hoc signing $APP"
+              codesign --force --deep --sign - "$APP" || true
+            fi
+          done
+          for F in *.dmg; do
+            if [ -f "$F" ]; then
+              echo "Ad-hoc signing $F"
+              codesign --force --sign - "$F" || true
+            fi
+          done
+          # Also strip the quarantine xattr from artifacts we publish so users
+          # who download via Terminal/curl get a clean install.
+          xattr -cr . 2>/dev/null || true
+
+
       - name: Build & sign Windows installer
         if: matrix.target == 'win'
         env:
@@ -99,7 +126,7 @@ jobs:
           : > checksums-${{ matrix.target }}.txt
           for f in *.dmg *.zip *.exe *.AppImage *.deb; do
             if [ -f "$f" ]; then
-              sha256sum "$f" >> checksums-${{ matrix.target }}.txt
+              if command -v sha256sum >/dev/null; then sha256sum "$f"; else shasum -a 256 "$f"; fi >> checksums-${{ matrix.target }}.txt
             fi
           done
           cat checksums-${{ matrix.target }}.txt || true
