@@ -6,6 +6,8 @@ directories:
   output: release
   buildResources: resources
 
+afterPack: ./scripts/after-pack.cjs
+
 files:
   - out/**/*
   - package.json
