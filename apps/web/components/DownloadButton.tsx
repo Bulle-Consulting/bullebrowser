@@ -27,8 +27,8 @@ export async function DownloadButton({ size = 'lg' }: { size?: 'lg' | 'md' }) {
   const asset = release?.downloadFor?.[platform];
   const cls =
     size === 'lg'
-      ? 'rounded-md bg-primary px-5 py-3 text-base font-semibold text-white shadow-sm hover:bg-primary-hover'
-      : 'rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white hover:bg-primary-hover';
+      ? 'rounded-full bg-ink-primary px-6 py-3 text-base font-semibold text-ink-inverse shadow-[0_0_40px_-12px_rgba(244,244,245,0.5)] transition-opacity hover:opacity-85'
+      : 'rounded-full bg-ink-primary px-4 py-2 text-sm font-semibold text-ink-inverse transition-opacity hover:opacity-85';
 
   if (!asset) {
     return (
@@ -39,13 +39,13 @@ export async function DownloadButton({ size = 'lg' }: { size?: 'lg' | 'md' }) {
   }
 
   return (
-    <div className="flex flex-col items-start gap-1">
+    <div className="flex flex-col items-center gap-2">
       <a href={asset.browserDownloadUrl} className={cls}>
         {PLATFORM_LABEL[platform]}
       </a>
-      <div className="text-xs text-ink-secondary">
+      <div className="text-xs text-ink-faint">
         {release?.tagName} · {formatBytes(asset.size)} ·{' '}
-        <Link href="/download" className="underline">
+        <Link href="/download" className="underline underline-offset-2 hover:text-ink-secondary">
           all platforms
         </Link>
       </div>

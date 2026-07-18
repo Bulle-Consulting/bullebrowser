@@ -16,7 +16,7 @@ export default function Image() {
           flexDirection: 'column',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
+          background: 'linear-gradient(135deg, #050506 0%, #101014 100%)',
           padding: '80px',
           color: '#F8FAFC',
           fontFamily: 'sans-serif',
@@ -35,7 +35,8 @@ export default function Image() {
               width: '88px',
               height: '88px',
               borderRadius: '20px',
-              background: 'linear-gradient(135deg, #2563EB, #1D4ED8)',
+              background: '#000000',
+              border: '1px solid #26262B',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -68,7 +69,7 @@ export default function Image() {
               width: '12px',
               height: '12px',
               borderRadius: '50%',
-              background: '#F59E0B',
+              background: '#2563EB',
             }}
           />
           By {product.vendor}

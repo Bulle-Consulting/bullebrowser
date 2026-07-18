@@ -1,5 +1,7 @@
 import type { Config } from 'tailwindcss';
 
+// Comet-inspired dark palette: near-black surfaces, soft white ink,
+// hairline borders, brand blue reserved for accents and CTAs.
 const config: Config = {
   content: [
     './app/**/*.{ts,tsx}',
@@ -17,18 +19,20 @@ const config: Config = {
           hover: '#D97706',
         },
         surface: {
-          dark: '#0F172A',
-          light: '#FFFFFF',
-          muted: '#F8FAFC',
+          dark: '#050506',
+          base: '#09090B',
+          muted: '#101012',
+          raised: '#141416',
         },
         ink: {
-          primary: '#0F172A',
-          secondary: '#64748B',
-          inverse: '#F8FAFC',
+          primary: '#F4F4F5',
+          secondary: '#9D9DA6',
+          faint: '#6B6B74',
+          inverse: '#09090B',
         },
         line: {
-          DEFAULT: '#E2E8F0',
-          strong: '#CBD5E1',
+          DEFAULT: 'rgba(255,255,255,0.08)',
+          strong: 'rgba(255,255,255,0.16)',
         },
       },
       fontFamily: {

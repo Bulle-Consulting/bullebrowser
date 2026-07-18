@@ -3,28 +3,71 @@
 @tailwind utilities;
 
 :root {
-  --color-primary: #2563eb;
+  --color-primary: #3b82f6;
   --color-accent: #f59e0b;
+  color-scheme: dark;
 }
 
 html {
   font-family: var(--font-inter), system-ui, sans-serif;
   scroll-behavior: smooth;
+  background: #09090b;
+}
+
+::selection {
+  background: rgba(37, 99, 235, 0.4);
+  color: #f4f4f5;
+}
+
+/* Soft radial glow used behind the hero and the explainer frame. */
+.glow {
+  background:
+    radial-gradient(600px 300px at 50% 0%, rgba(37, 99, 235, 0.16), transparent 70%);
+}
+
+/* Explainer walkthrough animations */
+@keyframes explainer-progress {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.explainer-caption {
+  animation: explainer-fade 400ms ease-out;
+}
+@keyframes explainer-fade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .prose-lite {
   font-size: 16px;
-  line-height: 1.7;
+  line-height: 1.75;
+  color: #9d9da6;
+}
+.prose-lite h1 {
+  color: #f4f4f5;
 }
 .prose-lite h2 {
-  font-weight: 700;
-  font-size: 1.5rem;
-  margin-top: 2rem;
+  font-weight: 600;
+  font-size: 1.375rem;
+  letter-spacing: -0.01em;
+  color: #f4f4f5;
+  margin-top: 2.5rem;
   margin-bottom: 0.5rem;
 }
 .prose-lite h3 {
   font-weight: 600;
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
+  color: #f4f4f5;
   margin-top: 1.5rem;
   margin-bottom: 0.25rem;
 }
@@ -36,7 +79,12 @@ html {
   padding-left: 1.5rem;
   margin-bottom: 1rem;
 }
+.prose-lite strong {
+  color: #f4f4f5;
+  font-weight: 600;
+}
 .prose-lite a {
   color: var(--color-primary);
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
